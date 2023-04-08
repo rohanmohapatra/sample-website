@@ -7,6 +7,7 @@
     "build": "ts-node index.ts",
     "dev": "light-server -s ../pages -p 4000"
   },
+  "homepage": "https://rohanmohapatra.github.io/sample-website",
   "dependencies": {
     "@ptkdev/logger": "^1.8.0",
     "axios": "^1.3.5",

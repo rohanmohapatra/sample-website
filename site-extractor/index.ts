@@ -4,6 +4,8 @@ import Logger from "@ptkdev/logger";
 import puppeteer from "puppeteer";
 import https from "https";
 
+import packageJson from "./package.json";
+
 interface UrlName {
   url: string;
   name: string;
@@ -46,7 +48,6 @@ const buildImagesForSite = async (pageName: string) => {
   }
 
   const promises: Promise<UrlName>[] = [];
-  const images = new Map<string, string>();
 
   imageUrls.forEach((imageUrl, i) => {
     const promise = new Promise<UrlName>((resolve, reject) => {
@@ -59,8 +60,7 @@ const buildImagesForSite = async (pageName: string) => {
     promises.push(promise);
   });
 
-  const values = await Promise.all(promises);
-  return values;
+  return await Promise.all(promises);
 };
 
 const logger = new Logger();
@@ -82,7 +82,10 @@ pages.forEach((page) => {
         new RegExp(/"\/view\/micosyslab\/.+?\"/g),
         (match) => {
           const lastIndex = match.lastIndexOf("/");
-          return `"${match.substring(lastIndex, match.length - 1)}.html"`;
+          return `"${packageJson.homepage}/${match.substring(
+            lastIndex,
+            match.length - 1
+          )}.html"`;
         }
       );
       logger.info("Adjusting Navigation links");
